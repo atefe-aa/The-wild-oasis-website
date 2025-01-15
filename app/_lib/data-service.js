@@ -1,14 +1,19 @@
 import { eachDayOfInterval } from 'date-fns';
 
+const BASE_URL = process.env.API_URL;
 /////////////
 // GET
 
 export async function getCabin(id) {
-  const { data, error } = await supabase
-    .from('cabins')
-    .select('*')
-    .eq('id', id)
-    .single();
+  const res = await fetch(`${BASE_URL}/cabins/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
+  const { data, error } = await res.json();
+
 
   // For testing
   // await new Promise((res) => setTimeout(res, 1000));
@@ -21,11 +26,14 @@ export async function getCabin(id) {
 }
 
 export async function getCabinPrice(id) {
-  const { data, error } = await supabase
-    .from('cabins')
-    .select('regularPrice, discount')
-    .eq('id', id)
-    .single();
+  const res = await fetch(`${BASE_URL}/cabins/${id}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json",
+    },
+  });
+  const { data, error } = await res.json();
 
   if (error) {
     console.error(error);
@@ -34,11 +42,15 @@ export async function getCabinPrice(id) {
   return data;
 }
 
-export const getCabins = async function () {
-  const { data, error } = await supabase
-    .from('cabins')
-    .select('id, name, maxCapacity, regularPrice, discount, image')
-    .order('name');
+export const getCabins = async function () {  
+  const res = await fetch(`${BASE_URL}/cabins`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    },
+  });
+  const { data, error } = await res.json();
 
   if (error) {
     console.error(error);
