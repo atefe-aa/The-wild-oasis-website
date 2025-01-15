@@ -3,5 +3,7 @@ export const metadata = {
     description: "The way to see cabins",
   };
 export default function page(){
-    return <h1>account</h1>;
+    return    <h2 className="font-semibold text-2xl text-accent-400 mb-7">
+    Welcome, Jonas
+  </h2>;
 }
