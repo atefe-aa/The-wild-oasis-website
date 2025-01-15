@@ -1,5 +1,10 @@
 import SelectCountry from "@/app/_components/SelectCountry";
 
+export const metadata = {
+  title: "Update Profile",
+  description: "The way to see cabins",
+};
+
 export default function Page() {
   // CHANGE
   const countryFlag = "pt.jpg";
