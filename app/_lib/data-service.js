@@ -244,3 +244,56 @@ export async function deleteBooking(id) {
   }
   return data;
 }
+
+
+export const getFormFieldsByTopicId = async ()=> {
+  // await getCsrfToken(); 
+  const url = `https://homa.api.demo.khateroshan.com/api/v1/fields/10`;
+  // const url = `http://homa.local/api/v1/fields/10`;
+  const body = JSON.stringify({
+    company_id: 1,
+    subscribe_id:1
+  });
+  console.log('get form fields');
+
+  return await apiRequest(url, {
+    method: 'POST',
+    cache: 'force-cache',
+    body,
+  });
+};
+
+// const getCsrfToken = async () => {
+//   await fetch('http://homa.local/sanctum/csrf-cookie', {
+//     credentials: 'include',
+//     mode: 'cors',
+//   });
+// };
+
+const apiRequest = async (url, options) => {
+  const headers = {
+    Authorization: 'Bearer 14|nweTAuQKwdsVJQGIWurGNyyPzDIEJTqb2pms74Gc',
+    // Authorization: 'Bearer 11|oU4RG6EBgrdjdeioRGRF7DeUzP0RP0ufa4Cq1Rcr',
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+    // 'X-Requested-With': 'XMLHttpRequest',
+    ...options?.headers,
+  };
+
+  try {
+    const response = await fetch(url, { 
+      ...options, 
+      headers,
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error('API Request Error:', error);
+    throw error;
+  }
+};
