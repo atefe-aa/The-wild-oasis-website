@@ -1,28 +1,46 @@
-"use client"
+"use client"; // Force the component to run on the client
 
-import { getCountries } from '@/app/_lib/data-service';
+import { useEffect, useState } from "react";
+import { getCountries } from "@/app/_lib/data-service";
 
-// Let's imagine your colleague already built this component 😃
+function SelectCountry({ defaultCountry, name, id, className }) {
+  const [countries, setCountries] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-async function SelectCountry({ defaultCountry, name, id, className }) {
-  const countries = await getCountries();
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const data = await getCountries();
+        setCountries(data);
+      } catch (error) {
+        console.error("Failed to fetch countries:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchData();
+  }, []);
+
   const flag =
-    countries.find((country) => country.name === defaultCountry)?.flag ?? '';
-
+    countries.find((country) => country.name === defaultCountry)?.flag ?? "";
   return (
     <select
       name={name}
       id={id}
-      // Here we use a trick to encode BOTH the country name and the flag into the value. Then we split them up again later in the server action
       defaultValue={`${defaultCountry}%${flag}`}
       className={className}
     >
-      <option value=''>Select country...</option>
-      {countries.map((c) => (
-        <option key={c.name} value={`${c.name}%${c.flag}`}>
-          {c.name}
-        </option>
-      ))}
+      <option value="">Select country...</option>
+      {loading ? (
+        <option disabled>Loading...</option>
+      ) : (
+        countries.map((c) => (
+          <option key={c.name} value={`${c.name}%${c.flag}`}>
+            {c.name}<span><img src={c.flag}/></span>
+          </option>
+        ))
+      )}
     </select>
   );
 }

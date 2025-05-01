@@ -1,49 +1,25 @@
-"use client"; // Force the component to run on the client
+import SelectCountry from "@/app/_components/SelectCountry";
+import UpdateProfileForm from "@/app/_components/UpdateProfileForm";
 
-import { useEffect, useState } from "react";
-import { getCountries } from "@/app/_lib/data-service";
-
-function SelectCountry({ defaultCountry, name, id, className }) {
-  const [countries, setCountries] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const data = await getCountries();
-        setCountries(data);
-      } catch (error) {
-        console.error("Failed to fetch countries:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchData();
-  }, []);
-
-  const flag =
-    countries.find((country) => country.name === defaultCountry)?.flag ?? "";
-
+export default function Page() {
   return (
-    <select
-      name={name}
-      id={id}
-      defaultValue={`${defaultCountry}%${flag}`}
-      className={className}
-    >
-      <option value="">Select country...</option>
-      {loading ? (
-        <option disabled>Loading...</option>
-      ) : (
-        countries.map((c) => (
-          <option key={c.name} value={`${c.name}%${c.flag}`}>
-            {c.name}
-          </option>
-        ))
-      )}
-    </select>
+    <div>
+      <h2 className="font-semibold text-2xl text-accent-400 mb-4">
+        Update your guest profile
+      </h2>
+
+      <p className="text-lg mb-8 text-primary-200">
+        Providing the following information will make your check-in process
+        faster and smoother. See you soon!
+      </p>
+
+      <UpdateProfileForm>
+        <SelectCountry
+        name="nationality"
+        id="nationality"
+        className="px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm"
+        />
+      </UpdateProfileForm>
+    </div>
   );
 }
-
-export default SelectCountry;

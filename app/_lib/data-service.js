@@ -2,6 +2,7 @@ import { eachDayOfInterval } from "date-fns";
 import { notFound } from "next/navigation";
 
 const BASE_URL = process.env.API_URL;
+// const accessToken = cookies.get("access_token");
 /////////////
 // GET
 
